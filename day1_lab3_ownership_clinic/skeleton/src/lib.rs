@@ -1,25 +1,28 @@
-pub fn describe_device(name: String) -> String {
+pub fn describe_device(name: &str) -> String {
+    // string slice로 바꿔줘서 나중에 다시 저 string을 쓸수있도록 처리
+    
     // TODO: this function should not take ownership.
     format!("device={name}")
 }
 
-pub fn total(values: Vec<i32>) -> i32 {
+pub fn total(values: &[i32]) -> i32 {
+    // total 또한 vector를 저장할 필요가 없다.
     // TODO: this function should not take ownership of the vector.
     values.iter().sum()
 }
 
-pub fn append_ready(log: String) -> String {
+pub fn append_ready(log: &mut String) {
     // TODO: change this function so it updates the caller's String in place.
-    let mut log = log;
     log.push_str(" -> ready");
-    log
 }
 
 pub fn summarize_log(log: &mut String) -> String {
     // TODO: avoid overlapping mutable and immutable borrows.
-    let writer = log;
-    writer.push_str(" -> checked");
-    format!("{writer} (len={})", writer.len())
+    {
+        let writer = &mut *log;
+        writer.push_str(" -> checked");
+    }
+    format!("{log} (len={})", log.len())
 }
 
 #[cfg(test)]
