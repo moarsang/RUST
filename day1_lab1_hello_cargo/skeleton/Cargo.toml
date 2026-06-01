@@ -1,0 +1,4 @@
+[package]
+name = "day1_lab1_hello_cargo"
+version = "0.1.0"
+edition = "2024"
