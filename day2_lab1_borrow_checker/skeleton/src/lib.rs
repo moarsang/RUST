@@ -1,19 +1,25 @@
 pub fn push_after_reading(values: &mut Vec<i32>) -> Option<i32> {
     // TODO: read the first value, then push first + 10 into the vector.
     // Avoid holding a reference while mutating the vector.
-    let _ = values;
-    todo!("return the first value")
+
+    let first = values.first().copied()?;
+    values.push(first + 10);
+
+    Some(first)
+
 }
 
-pub fn sum(values: Vec<i32>) -> i32 {
+pub fn sum(values: &[i32]) -> i32 { // 값을 참조해서 새로운 값으로 반환 
     // TODO: this helper should not take ownership of the vector.
     values.iter().sum()
 }
 
-pub fn increment_all(values: &mut [i32]) {
+pub fn increment_all(values: &mut [i32]) { // 값을 참조해서 해당 값을 수정
     // TODO: increment every value by 1.
-    let _ = values;
-    todo!("increment values")
+
+    for value in values {
+        *value += 1;
+    }
 }
 
 #[cfg(test)]
