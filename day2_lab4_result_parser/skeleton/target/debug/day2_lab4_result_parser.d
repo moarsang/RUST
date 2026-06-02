@@ -1,0 +1,1 @@
+/home/user/Desktop/lab-materials/day2_lab4_result_parser/skeleton/target/debug/day2_lab4_result_parser: /home/user/Desktop/lab-materials/day2_lab4_result_parser/skeleton/src/lib.rs /home/user/Desktop/lab-materials/day2_lab4_result_parser/skeleton/src/main.rs

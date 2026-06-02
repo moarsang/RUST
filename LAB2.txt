@@ -48,3 +48,9 @@ let a = Rc::clone(&config);
 
 ** RefCell<T>와 내부 가변성 **
 * RefCell 또한 자동 def 지원
+
+
+
+** 에러 처리 기초 **
+
+** 종합 실습 및 Wrap-up **

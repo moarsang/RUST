@@ -12,8 +12,25 @@ pub enum CommandError {
 }
 
 pub fn parse_command(line: &str) -> Result<Command, CommandError> {
-    let _ = line;
-    todo!("parse SET <target> <level> or STOP <target>")
+    let mut parts = line.split_whitespace();
+    let action = parts.next().ok_or(CommandError::MissingField("action"))?;
+
+    match action {
+        "SET" => {//parse_set(&mut parts),
+            let target = parts.next().ok_or(CommandError::MissingField("target"))?;
+            let level_text = parts.next().ok_or(CommandError::MissingField("level"))?;
+            let level = level_text.parse::<u8>()
+                .map_err(|_| CommandError::InvalidLevel(level_text.to_string()))?;
+            Ok(Command::Set { target: target.to_string(), level })
+        }
+        "STOP" => {//parse_stop(&mut parts),
+            let target = parts.next().ok_or(CommandError::MissingField("target"))?;
+            Ok(Command::Stop { target: target.to_string() })
+        }
+        other => Err(CommandError::UnknownAction(other.to_string())),
+    }
+    //let _ = line;
+    //todo!("parse SET <target> <level> or STOP <target>")
 }
 
 #[cfg(test)]
