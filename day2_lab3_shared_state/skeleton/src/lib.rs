@@ -16,18 +16,16 @@ impl Device {
 pub type SharedDevice = Rc<RefCell<Device>>;
 
 pub fn make_shared_device(name: &str) -> SharedDevice {
-    let _ = name;
-    todo!("create Rc<RefCell<Device>>")
+    Rc::new(RefCell::new(Device::new(name)))
 }
 
 pub fn attach_reading(device: &SharedDevice, value: i32) {
-    let _ = (device, value);
-    todo!("borrow_mut and push value")
+    device.borrow_mut().readings.push(value);
 }
 
 pub fn snapshot(device: &SharedDevice) -> String {
-    let _ = device;
-    todo!("borrow immutably and format name/readings")
+    let borrowed = device.borrow();
+    format!("{}: {:?}", borrowed.name, borrowed.readings)
 }
 
 #[cfg(test)]

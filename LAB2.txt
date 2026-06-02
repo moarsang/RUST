@@ -1,0 +1,50 @@
+** Borrow Checker **
+
+* &mut [T]는 길이에 대한 수정 권한은 없고 내부 인자 값 변경 권한만 있음
+ㄴ 길이가 유지되는 상태에서는 Vec에 대해서 collection으로만 받아와도 내부 인자 값 수정 가능 
+
+* fn total(values: Vec<i32>)는 왜 불편한가?
+-> vector의 ownership 자체를 옮기게 되므로.
+
+* 불변 참조가 살아있는 동안 가변 참조는 허락되지 않는다.
+
+* &mut [i32] / &mut Vec<i32>
+ㄴ 둘다 값에 대한 수정 권한은 있지만 컬렉션 타입의 경우, 길이에 대한 수정 권한은 X
+
+* copied의 경우는 힙 메모리 할당 X --> 스택에서의 복사 및 저장
+
+* clone을 사용하는 경우는 실제 별도의 메모리 저장 주소가 필요한 것이 아닌 이상 사용 X 
+
+
+
+** Shared ownership with Rc <T>**
+
+* Rc에서의 clone은 strong_count 증가 == 소유주를 한 명 더 늘린다.
+ㄴ 실제 heap 메모리 복사는 아니지만 실제 소유주가 되는 것임
+
+* 모든 Rc를 소유하던 binding이 drop --> count == 0, heap에 대한 free 발생
+ㄴ RUST compiler 입장에서는 실제 heap에 대한 소유주는 Rc 하나
+ㄴㄴ 결국엔 Rc가 strong_count를 기반으로 소유주들이 scope인지 scope out인지 관리 
+
+* 모든 Rc는 같은 메모리 주소를 가진다. 
+ㄴ 맨 처음 Rc::new를 한 owner에 대해서 drop을 시켜도 추가한 Rc owner가 존재한다면 free되지 않는다.
+'''
+let config = Rc::new(String::from("mode"));
+let a = Rc::clone(&config);
+
+--> 여기서 config를 drop해도 a에 의한 owner로 heap은 유지
+'''
+
+* Rc는 여러 소유자가 같은 데이터를 공유하므로 불변 참조만 허용 (immutable)
+
+* Weak<T>는 소유권을 가져가는 건 아니고 reference를 넣어주는 정도
+
+* Rc는 누군가의 input으로 들어갈 때 자동으로 Deref 
+--> 자기 안에 있는 실제 ref를 던져줄 수 있다.
+
+* cycle : 상호 참조가 생기는 경우
+
+
+
+** RefCell<T>와 내부 가변성 **
+* RefCell 또한 자동 def 지원
